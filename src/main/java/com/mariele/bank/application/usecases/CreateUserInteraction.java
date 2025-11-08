@@ -13,4 +13,16 @@ public class CreateUserInteraction {
     public UserDTO createUser(UserDTO user) {
         return userGateway.createUser(user);
     }
+
+    public UserDTO getUser(long account) {
+        return userGateway.getUserByAccount(account);
+    }
+
+    public UserDTO updateUser(UserDTO user) {
+        return userGateway.updateUser(user);
+    }
+
+    public void deleteUser(long account) {
+        userGateway.deleteUser(account);
+    }
 }

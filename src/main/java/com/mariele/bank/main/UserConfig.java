@@ -1,10 +1,11 @@
 package com.mariele.bank.main;
 
-import com.marieleprojetos.bank_api_spring.application.gateways.UserGateway;
-import com.marieleprojetos.bank_api_spring.application.usecases.CreateUserInteraction;
-import com.marieleprojetos.bank_api_spring.infrastructure.mappers.UserMapper;
-import com.marieleprojetos.bank_api_spring.infrastructure.persistences.repositories.UserRepository;
-import com.marieleprojetos.bank_api_spring.infrastructure.persistences.repositories.gateways.UserRepositoryGateway;
+import com.mariele.bank.application.gateways.UserGateway;
+import com.mariele.bank.application.usecases.CreateUserInteraction;
+import com.mariele.bank.infrastructure.mappers.UserMapper;
+import com.mariele.bank.infrastructure.persistences.repositories.UserRepository;
+import com.mariele.bank.infrastructure.services.UserService;
+import com.mariele.bank.infrastructure.validators.UserValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,11 +18,16 @@ public class UserConfig {
 
     @Bean
     UserGateway userGateway(UserRepository userRepository, UserMapper userMapper) {
-        return new UserRepositoryGateway(userRepository, userMapper);
+        return new UserService(userRepository, userMapper);
     }
 
     @Bean
     UserMapper userMapper() {
         return new UserMapper();
+    }
+
+    @Bean
+    UserValidator userValidator() {
+        return new UserValidator();
     }
 }
