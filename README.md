@@ -1,9 +1,9 @@
 # bank-spring
-Api spring boot desenvolvida para atuar em um mini projeto de transações bancarias simples, utiliza jpa e banco de dados em memória h2.
+Api spring boot desenvolvida com o objetivo de aprendizado para atuar em um mini projeto de transações bancarias simples, utiliza jpa e banco de dados em memória h2.
 
 ## Passo a passo para rodar e utilizar
 1. Clone esse repositório no seu ambiente local;
-2. Atualize o maven para baixar as dependências e já pode rodar o projeto.
+2. Atualize o maven para baixar as dependências e rodar o projeto.
 3. Acessar o h2 para visualizar as alterações em http://localhost:8080/h2-console/
 
 ## Utilização
