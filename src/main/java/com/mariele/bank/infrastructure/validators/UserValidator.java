@@ -3,7 +3,6 @@ package com.mariele.bank.infrastructure.validators;
 import com.mariele.bank.domain.dtos.UserDTO;
 import com.mariele.bank.infrastructure.exceptions.InvaluableAttributeException;
 import com.mariele.bank.infrastructure.exceptions.ResourceNotFoundException;
-import com.mariele.bank.infrastructure.mappers.UserMapper;
 import com.mariele.bank.infrastructure.persistences.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,20 +11,17 @@ public class UserValidator implements Validator<UserDTO> {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    UserMapper userMapper;
-
     @Override
     public boolean canCreate(UserDTO userDTO) {
         if (userDTO.account() <= 0) {
             throw new InvaluableAttributeException("Account number must be greater than zero");
         }
 
-        if ( userRepository.existsByAccount( userDTO.account() ) ) {
+        if (userRepository.existsByAccount(userDTO.account())) {
             throw new InvaluableAttributeException("Account number already exists");
         }
 
-        if ( userRepository.existsByEmail( userDTO.email() ) ) {
+        if (userRepository.existsByEmail(userDTO.email())) {
             throw new InvaluableAttributeException("Email already exists");
         }
 
@@ -50,19 +46,11 @@ public class UserValidator implements Validator<UserDTO> {
             throw new ResourceNotFoundException("Account number must be greater than zero");
         }
 
-        UserDTO existingUser = userRepository.findByAccount(userDTO.account())
-                .map(user -> userMapper.toDomainObj(user))
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for account: " + userDTO.account()));
-
-        if (existingUser == null) {
-            throw new ResourceNotFoundException("User not found for account: " + userDTO.account());
-        }
-
-        if ( isValidEmail(userDTO.email())) {
+        if (isValidEmail(userDTO.email())) {
             throw new InvaluableAttributeException("Email format is invalid");
         }
 
-        return true;
+        return userExists(userDTO.account());
     }
 
     @Override
@@ -71,11 +59,11 @@ public class UserValidator implements Validator<UserDTO> {
             throw new ResourceNotFoundException("Account number must be greater than zero");
         }
 
-        UserDTO existingUser = userRepository.findByAccount(account)
-                .map(user -> userMapper.toDomainObj(user))
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for account: " + account));
+        return userExists(account);
+    }
 
-        if (existingUser == null) {
+    public boolean userExists(long account) {
+        if (!userRepository.existsByAccount(account)) {
             throw new ResourceNotFoundException("User not found for account: " + account);
         }
 

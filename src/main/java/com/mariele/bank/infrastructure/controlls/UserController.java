@@ -35,9 +35,9 @@ public class UserController {
                 response = ResponseEntity.status(400).build();
             }
         } catch (InvaluableAttributeException e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            response = ResponseEntity.status( 400 ).body( e.getMessage() );
         } catch (Exception e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response = ResponseEntity.status( 500 ).body( e.getMessage() );
         }
 
         return response;
@@ -54,9 +54,24 @@ public class UserController {
             UserDTO userCreated = createUserUseCase.getUser(account);
             response = ResponseEntity.ok(userCreated);
         } catch (ResourceNotFoundException e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            response = ResponseEntity.status( 400 ).body( e.getMessage() );
         } catch (Exception e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response = ResponseEntity.status( 500 ).body( e.getMessage() );
+        }
+
+        return response;
+    }
+
+    @GetMapping
+    @RequestMapping("/all")
+    public ResponseEntity<?> getAllUsers() {
+        ResponseEntity<?> response;
+
+        try {
+            var users = createUserUseCase.getAllUsers();
+            response = ResponseEntity.ok(users);
+        } catch (Exception e) {
+            response = ResponseEntity.status( 500 ).body( e.getMessage() );
         }
 
         return response;
@@ -74,9 +89,9 @@ public class UserController {
                 response = ResponseEntity.status(400).build();
             }
         } catch (InvaluableAttributeException | ResourceNotFoundException e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            response = ResponseEntity.status( 400 ).body( e.getMessage() );
         } catch (Exception e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response =ResponseEntity.status( 500 ).body( e.getMessage() );
         }
 
         return response;
@@ -94,9 +109,9 @@ public class UserController {
                 response = ResponseEntity.status(400).build();
             }
         } catch (ResourceNotFoundException e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            response = ResponseEntity.status( 400 ).body( e.getMessage() );
         } catch (Exception e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response = ResponseEntity.status( 500 ).body( e.getMessage() );
         }
 
         return response;
